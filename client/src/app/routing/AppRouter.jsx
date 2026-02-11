@@ -9,7 +9,7 @@ export default function AppRouter() {
         <Route
           index
           path={CLIENT_ROUTES.MAIN_PAGE}
-          element={<>Тут будет красиво</>}
+          element={<>Home </>}
         />
       </Route>
     </Routes>
