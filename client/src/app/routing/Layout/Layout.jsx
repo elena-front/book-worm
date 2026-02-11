@@ -16,33 +16,30 @@ export default function Layout() {
               end
               className={({ isActive }) =>
                 `nav__link ${isActive ? "nav__link--active" : ""}`
-              }
-            >
-              Главная
+              }>
+              📕 Главная
             </NavLink>
 
             <NavLink
               to="/add"
               className={({ isActive }) =>
                 `nav__link ${isActive ? "nav__link--active" : ""}`
-              }
-            >
-              Добавить книгу
+              }>
+              + Добавить книгу
             </NavLink>
 
             <NavLink
               to="/favorites"
               className={({ isActive }) =>
                 `nav__link ${isActive ? "nav__link--active" : ""}`
-              }
-            >
-              Избранное
+              }>
+              ♡︎ ︎Избранное
             </NavLink>
           </nav>
 
           <div className="header__actions">
             <Link to="/login" className="btn btn--ghost">
-              Войти
+              ⎆ Войти
             </Link>
           </div>
         </div>

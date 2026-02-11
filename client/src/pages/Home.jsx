@@ -1,18 +1,41 @@
+import { useEffect, useState } from "react";
+
 export default function Home() {
+  const [books, setBooks] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function load() {
+      try {
+        const res = await fetch("/api/books/");
+        if (!res.ok) throw new Error("Не удалось загрузить книгу");
+        const data = await res.json();
+        setBooks(data);
+      } catch (e) {
+        console.error(e);
+        setBooks([]);
+      } finally {
+        setLoading(false);
+      }
+    }
+    load();
+  }, []);
+
   return (
     <>
       <section className="hero">
         <div className="container hero__inner">
-          <h1 className="hero__title">
-            Откройте мир книг 📖
-          </h1>
+          <h1 className="hero__title">Откройте мир книг 📖</h1>
 
           <p className="hero__subtitle">
-            Делитесь впечатлениями, обсуждайте любимые произведения и находите новые книги для чтения
+            Делитесь впечатлениями, обсуждайте любимые произведения и находите
+            новые книги для чтения
           </p>
 
           <div className="search">
-            <div className="search__icon" aria-hidden="true">🔎</div>
+            <div className="search__icon" aria-hidden="true">
+              🔎
+            </div>
             <input
               className="search__input"
               type="search"
@@ -30,8 +53,7 @@ export default function Home() {
                 className="fav"
                 type="button"
                 aria-label="В избранное"
-                aria-pressed="false"
-              >
+                aria-pressed="false">
                 ♥
               </button>
 
