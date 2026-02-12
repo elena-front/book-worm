@@ -20,13 +20,18 @@ export default function AppRouter({ user, setUser }) {
           element={<ProtectedRoute user={user} element={<Favorites />} />}
         />
         <Route
-          path="add"
+          path={CLIENT_ROUTES.ADD}
           element={<ProtectedRoute user={user} element={<AddBook />} />}
         />
         <Route
-        
           path={CLIENT_ROUTES.AUTH}
-          element={<ProtectedRoute anonymous={true} user={user} element={<AuthPage setUser={setUser} />} />}
+          element={
+            <ProtectedRoute
+              anonymous={true}
+              user={user}
+              element={<AuthPage setUser={setUser} />}
+            />
+          }
         ></Route>
       </Route>
     </Routes>
