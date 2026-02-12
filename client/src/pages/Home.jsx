@@ -7,7 +7,7 @@ export default function Home() {
   useEffect(() => {
     async function load() {
       try {
-        const res = await fetch("/api/books/");
+        const res = await fetch("/books/");
         if (!res.ok) throw new Error("Не удалось загрузить книгу");
         const data = await res.json();
         setBooks(data);
