@@ -53,7 +53,8 @@ export default function Home() {
                 className="fav"
                 type="button"
                 aria-label="В избранное"
-                aria-pressed="false">
+                aria-pressed="false"
+              >
                 ♥
               </button>
 

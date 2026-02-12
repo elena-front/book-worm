@@ -1,6 +1,14 @@
 import { Outlet, NavLink, Link } from "react-router";
+import { CLIENT_ROUTES } from "../../../shared/consts/clientRoutes";
+import "./Layout.css";
+import UserApi from "../../../entities/user/UserApi";
 
-export default function Layout() {
+export default function Layout({ user, setUser }) {
+  const handleSignOut = async () => {
+   // await UserApi.signOut();
+    setUser(null);
+  };
+
   return (
     <>
       <header className="header">
@@ -16,7 +24,8 @@ export default function Layout() {
               end
               className={({ isActive }) =>
                 `nav__link ${isActive ? "nav__link--active" : ""}`
-              }>
+              }
+            >
               📕 Главная
             </NavLink>
 
@@ -24,7 +33,8 @@ export default function Layout() {
               to="/add"
               className={({ isActive }) =>
                 `nav__link ${isActive ? "nav__link--active" : ""}`
-              }>
+              }
+            >
               + Добавить книгу
             </NavLink>
 
@@ -32,15 +42,27 @@ export default function Layout() {
               to="/favorites"
               className={({ isActive }) =>
                 `nav__link ${isActive ? "nav__link--active" : ""}`
-              }>
+              }
+            >
               ♡︎ ︎Избранное
             </NavLink>
           </nav>
 
           <div className="header__actions">
-            <Link to="/login" className="btn btn--ghost">
-              ⎆ Войти
-            </Link>
+            {!user && (
+              <Link to={CLIENT_ROUTES.AUTH} className="btn btn--ghost">
+                ⎆ Войти
+              </Link>
+            )}
+
+            {user && (
+              <div className="authArea">
+                Привет, {user}
+                <button onClick={handleSignOut} className="btn btn--ghost">
+                  Выйти
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </header>
