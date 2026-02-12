@@ -3,7 +3,6 @@ import { useMemo, useRef, useState } from "react";
 const TARGET_W = 400;
 const TARGET_H = 600;
 
-
 async function resizeToCover(file) {
   const img = await new Promise((resolve, reject) => {
     const i = new Image();
@@ -17,20 +16,20 @@ async function resizeToCover(file) {
   canvas.height = TARGET_H;
   const ctx = canvas.getContext("2d");
 
-
   const srcW = img.width;
   const srcH = img.height;
   const srcRatio = srcW / srcH;
   const dstRatio = TARGET_W / TARGET_H;
 
-  let sx = 0, sy = 0, sWidth = srcW, sHeight = srcH;
+  let sx = 0,
+    sy = 0,
+    sWidth = srcW,
+    sHeight = srcH;
 
   if (srcRatio > dstRatio) {
-
     sWidth = Math.round(srcH * dstRatio);
     sx = Math.round((srcW - sWidth) / 2);
   } else {
-
     sHeight = Math.round(srcW / dstRatio);
     sy = Math.round((srcH - sHeight) / 2);
   }
@@ -104,28 +103,27 @@ export default function AddBook() {
     e.preventDefault();
     if (!canSubmit) return;
 
+    // ✅ multipart/form-data (для multer)
     const fd = new FormData();
     fd.append("title", title.trim());
     fd.append("author", author.trim());
     fd.append("comment", comment.trim());
-    if (cover) fd.append("cover", cover);
+    if (cover) fd.append("cover", cover); // поле cover должно совпадать с upload.single("cover")
 
-    const res = await fetch("/api/books", {
+    const res = await fetch("/books", {
       method: "POST",
       body: fd,
     });
 
     if (!res.ok) {
+      const txt = await res.text().catch(() => "");
+      console.error("CREATE BOOK ERROR:", txt);
       alert("Не удалось добавить книгу");
       return;
     }
 
     alert("Книга добавлена!");
-    setTitle("");
-    setAuthor("");
-    setComment("");
-    setCover(null);
-    setCoverPreview("");
+    window.location.href = "/";
   }
 
   return (
@@ -133,7 +131,9 @@ export default function AddBook() {
       <div className="container">
         <div className="formCard">
           <div className="formCard__header">
-            <div className="formCard__icon" aria-hidden="true">➕</div>
+            <div className="formCard__icon" aria-hidden="true">
+              ➕
+            </div>
             <h2 className="formCard__title">Добавить книгу</h2>
           </div>
 
@@ -161,7 +161,7 @@ export default function AddBook() {
             </label>
 
             <label className="field">
-              <span className="field__label">Ваш комментарий о книге</span>
+              <span className="field__label">Описание / комментарий</span>
               <textarea
                 className="textarea"
                 value={comment}
@@ -196,7 +196,9 @@ export default function AddBook() {
                     />
                   ) : (
                     <>
-                      <div className="uploadBox__arrow" aria-hidden="true">⬆</div>
+                      <div className="uploadBox__arrow" aria-hidden="true">
+                        ⬆
+                      </div>
                       <div className="uploadBox__text">
                         {processing ? "Обработка..." : "Нажмите для загрузки"}
                       </div>
@@ -213,12 +215,16 @@ export default function AddBook() {
                 </div>
 
                 <div className="uploadHint">
-                  Рекомендуемый размер: <b>400×600</b> пикселей. Поддерживаемые форматы: JPG, PNG, WebP.
+                  Рекомендуемый размер: <b>400×600</b> пикселей. Поддерживаемые
+                  форматы: JPG, PNG, WebP.
                   <br />
                   {cover ? (
                     <span>Загружено и приведено к 400×600.</span>
                   ) : (
-                    <span>Изображение будет автоматически обрезано и приведено к 400×600.</span>
+                    <span>
+                      Изображение будет автоматически обрезано и приведено к
+                      400×600.
+                    </span>
                   )}
                 </div>
               </div>
