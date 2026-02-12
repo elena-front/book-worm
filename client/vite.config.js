@@ -10,6 +10,7 @@ export default defineConfig({
       '/reviews': 'http://localhost:3000',
       '/favorites': 'http://localhost:3000',
       '/auth': 'http://localhost:3000',
+      "/uploads": "http://localhost:3000"
     },
   },
 });

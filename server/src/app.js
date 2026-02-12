@@ -1,6 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
+const path = require("path");
 const booksRoutes = require("./routes/books.routes");
 const reviewsRoutes = require("./routes/reviews.routes");
 const favoritesRoutes = require("./routes/favorites.routes");
@@ -10,9 +11,15 @@ console.log("APP LOADED");
 
 // (Vite) 
 app.use(cors());
+app.use(express.json());
+
+app.use((req, res, next) => {
+  console.log("INCOMING:", req.method, req.url);
+  next();
+});
 
 //  JSON (POST/PUT)
-app.use(express.json());
+app.use("/uploads", express.static(path.join(__dirname, "..", "uploads")));
 app.use("/books", booksRoutes);
 app.use("/reviews", reviewsRoutes);
 app.use("/favorites", favoritesRoutes);
@@ -21,10 +28,7 @@ app.use("/favorites", favoritesRoutes);
 //
 //
 //
-app.use((req, res, next) => {
-  console.log("INCOMING:", req.method, req.url);
-  next();
-});
+
 ///
 //
 //
