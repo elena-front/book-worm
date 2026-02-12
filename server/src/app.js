@@ -3,17 +3,21 @@ const express = require("express");
 const cors = require("cors");
 const booksRoutes = require("./routes/books.routes");
 const reviewsRoutes = require("./routes/reviews.routes");
+const favoritesRoutes = require("./routes/favorites.routes");
 
 const app = express();
 console.log("APP LOADED");
 
-// чтобы фронт (Vite) мог делать запросы на сервер
+// (Vite) 
 app.use(cors());
-//
-// чтобы сервер понимал JSON из запросов (POST/PUT)
+
+//  JSON (POST/PUT)
 app.use(express.json());
 app.use("/books", booksRoutes);
 app.use("/reviews", reviewsRoutes);
+app.use("/favorites", favoritesRoutes);
+
+//
 //
 //
 //

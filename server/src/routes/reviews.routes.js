@@ -6,6 +6,10 @@ const {
 } = require("../controllers/reviews.controller");
 
 // POST /reviews
+//
+//
+//
+//отзывчики
 router.post("/", createReview);
 router.get("/", getAllReviews);
 

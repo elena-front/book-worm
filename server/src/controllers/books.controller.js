@@ -8,21 +8,21 @@ const getAllBooks = async (req, res) => {
     res.status(200).json(books);
   } catch (err) {
     console.log(err);
-    res.status(500).send(`Сори, ошибка сервера: ${err}`);
+    res.status(500).send(`Tobi Pushka: ${err}`);
   }
 };
 const getBookById = async (req, res) => {
   try {
-    const book = await Book.findByPk(req.params.id);
+    const book = await Book.findByPk(req.params.id); /// по айдишнику 
 
     if (!book) {
-      return res.status(404).send("Книга не найдена");
+      return res.status(404).send("Tobi Pushka");
     }
 
     res.status(200).json(book);
   } catch (err) {
     console.log(err);
-    res.status(500).send(`Сори, ошибка сервера: ${err}`);
+    res.status(500).send(`Tobi Pushka: ${err}`);
   }
 };
 const createBook = async (req, res) => {
@@ -33,7 +33,7 @@ const createBook = async (req, res) => {
       return res.status(400).send("name и author обязательны");
     }
 
-    const newBook = await Book.create({
+    const newBook = await Book.create({ // новая книженция
       name,
       author,
       description: description || "",
@@ -44,12 +44,12 @@ const createBook = async (req, res) => {
     res.status(201).json(newBook);
   } catch (err) {
     console.log(err);
-    res.status(500).send(`Сори, ошибка сервера: ${err}`);
+    res.status(500).send(`Tobi Pushka: ${err}`);
   }
 };
 const getBookReviews = async (req, res) => {
   try {
-    const bookId = req.params.id;
+    const bookId = req.params.id; 
 
     const reviews = await Review.findAll({
       where: { book_id: bookId }, /// бестолковый айдишник// находим книшку
@@ -59,10 +59,32 @@ const getBookReviews = async (req, res) => {
     res.status(200).json(reviews);
   } catch (err) {
     console.log(err);
-    res.status(500).send(`Сори, ошибка сервера: ${err}`);
+    res.status(500).send(`Tobi Pushka: ${err}`);
   }
   //   fetch('/books/3')
   // fetch('/books/3/reviews')
+};
+
+const getBookFull = async (req, res) => { /// все книженции  и его уникалки 
+  try {
+    const bookId = req.params.id;
+
+    const book = await Book.findByPk(bookId);
+
+    if (!book) {
+      return res.status(404).send("Tobi Pushka");
+    }
+
+    const reviews = await Review.findAll({
+      where: { book_id: bookId },
+      order: [["id", "ASC"]],
+    });
+
+    res.status(200).json({ book, reviews });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send(`Tobi Pushka: ${err}`);
+  }
 };
 
 module.exports = {
@@ -70,4 +92,5 @@ module.exports = {
   getBookById,
   createBook,
   getBookReviews,
+  getBookFull,
 };

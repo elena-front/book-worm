@@ -7,6 +7,7 @@ const {
   getBookById,
   createBook,
   getBookReviews,
+  getBookFull,
 } = require("../controllers/books.controller");
 
 // GET /books
@@ -14,5 +15,6 @@ router.get("/", getAllBooks);
 router.post("/", createBook);
 router.get("/:id/reviews", getBookReviews);
 router.get("/:id", getBookById);
+router.get("/:id/full", getBookFull);
 
 module.exports = router;
