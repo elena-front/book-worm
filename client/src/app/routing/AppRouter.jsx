@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router";
 import Layout from "../routing/Layout/Layout";
 import Favorites from "../../pages/Favorites";
 import Home from "../../pages/Home";
+import AddBook from "../../pages/AddBook";
 import { CLIENT_ROUTES } from "../../shared/consts/clientRoutes";
 import { AuthPage } from "../../pages";
 import ProtectedRoute from "../routing/ProtectedRoute";
@@ -17,6 +18,10 @@ export default function AppRouter({ user, setUser }) {
         <Route
           path={CLIENT_ROUTES.FAVORITES}
           element={<ProtectedRoute user={user} element={<Favorites />} />}
+        />
+        <Route
+          path="add"
+          element={<ProtectedRoute user={user} element={<AddBook />} />}
         />
         <Route
         
