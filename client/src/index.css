@@ -274,3 +274,122 @@ body {
 .btn--ghost:active {
   transform: translateY(1px);
 }
+
+.page { padding: 28px 0 60px; }
+
+.formCard{
+  max-width: 720px;
+  margin: 0 auto;
+  background: rgba(255,255,255,.6);
+  border: 1px solid rgba(0,0,0,.08);
+  border-radius: 16px;
+  padding: 22px 22px 18px;
+  box-shadow: 0 10px 25px rgba(0,0,0,.05);
+}
+
+.formCard__header{
+  display:flex;
+  align-items:center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.formCard__icon{
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display:grid;
+  place-items:center;
+  background: rgba(139,94,60,.12);
+  color: #8b5e3c;
+  font-size: 18px;
+}
+
+.formCard__title{ margin:0; font-size: 24px; }
+
+.form{ display:flex; flex-direction: column; gap: 14px; }
+.field{ display:flex; flex-direction: column; gap: 8px; }
+.field__label{ font-size: 13px; color:#2b2520; font-weight: 600; }
+
+.input, .textarea{
+  width: 100%;
+  border: 1px solid rgba(0,0,0,.12);
+  background: rgba(255,255,255,.85);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 14px;
+  outline: none;
+}
+
+.textarea{ resize: vertical; min-height: 120px; }
+
+.input:focus, .textarea:focus{
+  border-color: rgba(139,94,60,.45);
+  box-shadow: 0 0 0 3px rgba(139,94,60,.12);
+}
+
+.uploadRow{ display:flex; gap: 18px; align-items: flex-start; }
+
+.uploadBox{
+  width: 140px;
+  height: 200px;
+  border-radius: 14px;
+  border: 2px dashed rgba(0,0,0,.16);
+  background: rgba(255,255,255,.6);
+  display:flex;
+  flex-direction: column;
+  align-items:center;
+  justify-content:center;
+  gap: 10px;
+  cursor:pointer;
+  user-select:none;
+  overflow:hidden;
+}
+
+.uploadBox:hover{
+  border-color: rgba(139,94,60,.35);
+  background: rgba(255,255,255,.85);
+}
+
+.uploadBox[aria-busy="true"]{ opacity:.8; cursor: progress; }
+
+.uploadBox__arrow{ font-size: 22px; opacity: .7; }
+.uploadBox__text{ font-size: 12px; color:#7a6f66; text-align:center; padding: 0 10px; }
+
+.uploadBox__img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.uploadHint{
+  font-size: 12px;
+  color:#7a6f66;
+  line-height: 1.4;
+  padding-top: 6px;
+  max-width: 420px;
+}
+
+.btnPrimary{
+  margin-top: 6px;
+  width: 100%;
+  border: 0;
+  border-radius: 12px;
+  padding: 14px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  background: #7a451f;
+  cursor: pointer;
+  box-shadow: 0 12px 24px rgba(122,69,31,.22);
+  transition: .2s ease;
+}
+
+.btnPrimary:hover{ filter: brightness(1.03); }
+.btnPrimary:active{ transform: translateY(1px); }
+
+.btnPrimary:disabled{
+  opacity: .6;
+  cursor: not-allowed;
+  box-shadow: none;
+}
