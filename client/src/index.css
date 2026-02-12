@@ -1,0 +1,276 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main {
+  flex: 1;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family:
+    system-ui,
+    -apple-system,
+    Segoe UI,
+    Roboto,
+    Arial,
+    sans-serif;
+  background: #fbf7f2;
+  color: #2b2520;
+}
+
+.container {
+  width: 1120px;
+  max-width: calc(100% - 48px);
+  margin: 0 auto;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  background: rgba(251, 247, 242, 0.9);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(10px);
+}
+
+.header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0;
+}
+
+.brand {
+  font-weight: 600;
+  text-decoration: none;
+  color: #2b2520;
+}
+
+.nav {
+  display: flex;
+  gap: 16px;
+}
+
+.nav__link {
+  text-decoration: none;
+  color: #7a6f66;
+  padding: 6px 12px;
+  border-radius: 999px;
+  transition: 0.2s ease;
+}
+
+.nav__link:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: #2b2520;
+}
+
+.nav__link--active {
+  background: rgba(122, 67, 31);
+  color: #ffffff;
+}
+
+.hero {
+  padding: 60px 0 30px;
+  text-align: center;
+}
+
+.hero__title {
+  margin: 0;
+  font-size: 40px;
+}
+
+.hero__subtitle {
+  margin-top: 12px;
+  color: #7a6f66;
+  font-size: 14px;
+}
+
+.search {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 999px;
+  padding: 10px 16px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.search__icon {
+  margin-right: 10px;
+  opacity: 0.6;
+}
+
+.search__input {
+  border: none;
+  outline: none;
+  flex: 1;
+  font-size: 14px;
+  background: transparent;
+}
+
+.catalog {
+  padding: 20px 0 60px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 12px;
+  position: relative;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+}
+
+.card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.card__title {
+  margin: 0;
+  font-size: 14px;
+}
+
+.card__author {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: #7a6f66;
+}
+
+.fav {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border: none;
+  background: #ffffff;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.fav:hover {
+  transform: scale(1.05);
+}
+
+.footer {
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  padding: 16px 0;
+}
+
+.footer__inner {
+  display: flex;
+  justify-content: space-between;
+  color: #7a6f66;
+  font-size: 13px;
+}
+
+.favPage {
+  padding: 34px 0 60px;
+}
+
+.favHeader {
+  text-align: center;
+  margin: 10px 0 22px;
+}
+
+.favHeader__icon {
+  color: #d94b4b;
+  font-size: 36px;
+  line-height: 1;
+}
+
+.favHeader__title {
+  margin: 0;
+  font-size: 46px;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.favHeader__sub {
+  margin: 8px 0 0;
+  color: #7a6f66;
+}
+
+.favEmpty {
+  max-width: 520px;
+  margin: 70px auto 0;
+  text-align: center;
+  color: #7a6f66;
+}
+
+.favEmpty__img {
+  font-size: 44px;
+  line-height: 1;
+  margin-bottom: 18px;
+}
+
+.favEmpty__title {
+  font-size: 18px;
+  color: #2b2520;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.favEmpty__text {
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.favEmpty__heart {
+  color: #d94b4b;
+  font-weight: 700;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 18px;
+  font-size: 14px;
+  border-radius: 999px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.btn--ghost {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  color: #2b2520;
+}
+
+.btn--ghost:hover {
+  background: #f6c453;
+  border-color: #f6c453;
+  color: #2b2520;
+  box-shadow: 0 4px 12px rgba(246, 196, 83, 0.4);
+}
+
+.btn--ghost:active {
+  transform: translateY(1px);
+}
