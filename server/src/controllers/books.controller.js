@@ -13,7 +13,7 @@ const getAllBooks = async (req, res) => {
 };
 const getBookById = async (req, res) => {
   try {
-    const book = await Book.findByPk(req.params.id); /// по айдишнику 
+    const book = await Book.findByPk(req.params.id); /// по айдишнику
 
     if (!book) {
       return res.status(404).send("Tobi Pushka");
@@ -33,7 +33,8 @@ const createBook = async (req, res) => {
       return res.status(400).send("name и author обязательны");
     }
 
-    const newBook = await Book.create({ // новая книженция
+    const newBook = await Book.create({
+      // новая книженция
       name,
       author,
       description: description || "",
@@ -49,7 +50,7 @@ const createBook = async (req, res) => {
 };
 const getBookReviews = async (req, res) => {
   try {
-    const bookId = req.params.id; 
+    const bookId = req.params.id;
 
     const reviews = await Review.findAll({
       where: { book_id: bookId }, /// бестолковый айдишник// находим книшку
@@ -59,13 +60,14 @@ const getBookReviews = async (req, res) => {
     res.status(200).json(reviews);
   } catch (err) {
     console.log(err);
-    res.status(500).send(`Tobi Pushka: ${err}`);
+    res.status(500).send(`Tobi: ${err}`);
   }
   //   fetch('/books/3')
   // fetch('/books/3/reviews')
 };
 
-const getBookFull = async (req, res) => { /// все книженции  и его уникалки 
+const getBookFull = async (req, res) => {
+  /// все книженции  и его уникалки
   try {
     const bookId = req.params.id;
 
