@@ -8,6 +8,7 @@ const {
   createBook,
   getBookReviews,
   getBookFull,
+  deleteBookById,
 } = require("../controllers/books.controller");
 
 // GET /books
@@ -16,5 +17,7 @@ router.post("/", createBook);
 router.get("/:id/reviews", getBookReviews);
 router.get("/:id", getBookById);
 router.get("/:id/full", getBookFull);
+router.delete('/:id', deleteBookById);
+
 
 module.exports = router;

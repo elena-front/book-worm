@@ -9,10 +9,26 @@ export default function Favorites() {
   useEffect(() => {
     async function loadFavorites() {
       try {
-        const res = await fetch(`/api/users/${userId}/favorites`);
-        if (!res.ok) throw new Error("Ошибка загрузки избранного");
-        const data = await res.json();
-        setBooks(Array.isArray(data) ? data : (data?.data ?? []));
+        // 1) получаем избранное пользователя (это пары user_id + book_id)
+        const favRes = await fetch(`/favorites/${userId}`);
+        if (!favRes.ok) throw new Error("Ошибка загрузки избранного");
+        const favData = await favRes.json();
+        const favorites = Array.isArray(favData)
+          ? favData
+          : (favData?.data ?? []);
+        const favBookIds = new Set(favorites.map((f) => f.book_id));
+
+        // 2) получаем все книги
+        const booksRes = await fetch("/books");
+        if (!booksRes.ok) throw new Error("Ошибка загрузки книг");
+        const booksData = await booksRes.json();
+        const allBooks = Array.isArray(booksData)
+          ? booksData
+          : (booksData?.data ?? []);
+
+        // 3) оставляем только те, что в избранном
+        const onlyFavBooks = allBooks.filter((b) => favBookIds.has(b.id));
+        setBooks(onlyFavBooks);
       } catch (e) {
         console.error(e);
         setBooks([]);
@@ -59,10 +75,10 @@ export default function Favorites() {
             {books.map((b) => (
               <article className="card" key={b.id}>
                 <div className="card__media">
-                  {b.cover && (
+                  {b.photo_url && (
                     <img
-                      src={b.cover}
-                      alt={b.title}
+                      src={b.photo_url}
+                      alt={b.name}
                       loading="lazy"
                       style={{
                         width: "100%",
@@ -75,7 +91,7 @@ export default function Favorites() {
                 </div>
 
                 <div className="card__body">
-                  <h3 className="card__title">{b.title}</h3>
+                  <h3 className="card__title">{b.name}</h3>
                   <p className="card__author">{b.author}</p>
                 </div>
               </article>
