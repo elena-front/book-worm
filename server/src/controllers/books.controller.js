@@ -88,6 +88,22 @@ const getBookFull = async (req, res) => {
     res.status(500).send(`Tobi Pushka: ${err}`);
   }
 };
+const deleteBookById = async (req, res) => {
+  try {
+    const bookId = req.params.id;
+
+    const deleted = await Book.destroy({ where: { id: bookId } });
+
+    if (!deleted) {
+      return res.status(404).send("Книга не найдена");
+    }
+
+    res.status(200).send("Книга удалена");
+  } catch (err) {
+    console.log(err);
+    res.status(500).send(`Сори, ошибка сервера: ${err}`);
+  }
+};
 
 module.exports = {
   getAllBooks,
@@ -95,4 +111,5 @@ module.exports = {
   createBook,
   getBookReviews,
   getBookFull,
+  deleteBookById,
 };
