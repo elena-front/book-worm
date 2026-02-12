@@ -14,7 +14,7 @@ const {
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, "..", "..", "uploads"));
+    cb(null, path.join(__dirname, "..", "..", "uploads"));  //hello
   },
   filename: (req, file, cb) => {
     const ext = path.extname(file.originalname || "").toLowerCase() || ".jpg";
