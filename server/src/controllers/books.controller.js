@@ -2,18 +2,17 @@ const { Book, Review } = require("../../db/models");
 
 const getAllBooks = async (req, res) => {
   try {
-    const books = await Book.findAll({ order: [["id", "ASC"]] }); /// по возрастанию
-    // ASC = по возрастанию
-    // DESC = по убыванию
+    const books = await Book.findAll({ order: [["id", "ASC"]] });
     res.status(200).json(books);
   } catch (err) {
     console.log(err);
     res.status(500).send(`Tobi Pushka: ${err}`);
   }
 };
+
 const getBookById = async (req, res) => {
   try {
-    const book = await Book.findByPk(req.params.id); /// по айдишнику
+    const book = await Book.findByPk(req.params.id);
 
     if (!book) {
       return res.status(404).send("Tobi Pushka");
@@ -25,20 +24,34 @@ const getBookById = async (req, res) => {
     res.status(500).send(`Tobi Pushka: ${err}`);
   }
 };
+
+// ✅ ОБНОВЛЕНО: принимает multipart/form-data + файл cover (multer)
 const createBook = async (req, res) => {
   try {
-    const { name, author, description, photo_url } = req.body;
+    // multipart/form-data поля приходят в req.body
+    // твой фронт шлёт: title, author, comment + cover (file)
+    const { title, name, author, comment, description } = req.body;
 
-    if (!name || !author) {
-      return res.status(400).send("name и author обязательны");
+    // поддерживаем оба варианта: title или name
+    const finalName = (name || title || "").trim();
+    const finalAuthor = (author || "").trim();
+    const finalDescription = (description || comment || "").trim();
+
+    if (!finalName || !finalAuthor) {
+      return res.status(400).send("name/title и author обязательны");
+    }
+
+    // если файл загружен через multer: req.file
+    let photo_url = "";
+    if (req.file && req.file.filename) {
+      photo_url = `/uploads/${req.file.filename}`;
     }
 
     const newBook = await Book.create({
-      // новая книженция
-      name,
-      author,
-      description: description || "",
-      photo_url: photo_url || "",
+      name: finalName,
+      author: finalAuthor,
+      description: finalDescription || "",
+      photo_url,
       rating: 0,
     });
 
@@ -48,26 +61,24 @@ const createBook = async (req, res) => {
     res.status(500).send(`Tobi Pushka: ${err}`);
   }
 };
+
 const getBookReviews = async (req, res) => {
   try {
     const bookId = req.params.id;
 
     const reviews = await Review.findAll({
-      where: { book_id: bookId }, /// бестолковый айдишник// находим книшку
+      where: { book_id: bookId },
       order: [["id", "ASC"]],
     });
-    /////возвращает отзывы конкретной книги
+
     res.status(200).json(reviews);
   } catch (err) {
     console.log(err);
     res.status(500).send(`Tobi: ${err}`);
   }
-  //   fetch('/books/3')
-  // fetch('/books/3/reviews')
 };
 
 const getBookFull = async (req, res) => {
-  /// все книженции  и его уникалки
   try {
     const bookId = req.params.id;
 
@@ -88,6 +99,7 @@ const getBookFull = async (req, res) => {
     res.status(500).send(`Tobi Pushka: ${err}`);
   }
 };
+
 const deleteBookById = async (req, res) => {
   try {
     const bookId = req.params.id;
