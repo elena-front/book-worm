@@ -150,7 +150,10 @@ export default function Favorites({ user }) {
     );
 
     try {
-      await axiosInstance("/favorites", { user_id: user.id, book_id: bookId });
+      await axiosInstance.delete("/favorites", {
+        user_id: user.id,
+        book_id: bookId,
+      });
       // сразу убираем из списка
       setBooks((prev) => prev.filter((b) => b.id !== bookId));
     } catch (e) {
