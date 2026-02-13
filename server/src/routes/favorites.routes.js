@@ -12,8 +12,8 @@ const verifyAccessToken = require("../middleware/verifyAccessToken");
 ///
 /// сладкая любовь
 // POST /favorites
-router.post("/", verifyAccessToken, addToFavorites);
-router.get("/:user_id", verifyAccessToken, getUserFavorites);
-router.delete("/", verifyAccessToken, removeFromFavorites);
+router.post("/:book_id", verifyAccessToken, addToFavorites);
+router.get("/", verifyAccessToken, getUserFavorites);
+router.delete("/:book_id", verifyAccessToken, removeFromFavorites);
 
 module.exports = router;

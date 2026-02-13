@@ -123,7 +123,7 @@ export default function Home({ user }) {
         // грузим книги и избранное параллельно
         const [booksData, favData] = await Promise.all([
           axiosInstance.get("/books"),
-          user == null ? [] : axiosInstance.get(`/favorites/${user.id}`),
+          user == null ? [] : axiosInstance.get("/favorites"),
         ]);
 
         const allBooks = Array.isArray(booksData)
@@ -166,15 +166,9 @@ export default function Home({ user }) {
 
     try {
       if (!isFav) {
-        await axiosInstance.post("/favorites", {
-          user_id: user.id,
-          book_id: bookId,
-        });
+        await axiosInstance.post(`/favorites/${bookId}`);
       } else {
-        await axiosInstance.delete("/favorites", {
-          user_id: user.id,
-          book_id: bookId,
-        });
+        await axiosInstance.delete(`/favorites/${bookId}`);
       }
 
       // обновляем UI
