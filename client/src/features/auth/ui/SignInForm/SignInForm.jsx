@@ -1,13 +1,14 @@
 import { useState } from "react";
-import { useNavigate } from 'react-router';
+import { useNavigate } from "react-router";
 import "./SignInForm.css";
-import { UserValidator } from "../../../../entities/user/model/UserValidator";
 import UserApi from "../../../../entities/user/UserApi";
+import { setAccessToken } from "../../../../shared/lib/axiosInstance";
+import { CLIENT_ROUTES } from "../../../../shared/consts/clientRoutes";
 
 function SignInForm({ setUser }) {
-  const [signInData, setSignInData] = useState({ email: "", password: "" });
+  const initialValue = { email: "", password: "" };
+  const [signInData, setSignInData] = useState(initialValue);
   const navigate = useNavigate();
-  console.log(setUser);
 
   const inputHandler = (event) => {
     setSignInData((current) => ({
@@ -19,18 +20,11 @@ function SignInForm({ setUser }) {
   const signInHandler = async (event) => {
     event.preventDefault();
 
-    const { isValid, error: validationError } =
-      UserValidator.validateSignInData(signInData);
-
-    if (!isValid) {
-      alert(validationError);
-      return;
-    }
     const { statusCode, data, error } = await UserApi.signIn(signInData);
     if (statusCode === 200) {
       setAccessToken(data.accessToken);
       setUser(data.user);
-      navigate("/tasks");
+      navigate(CLIENT_ROUTES.MAIN_PAGE);
       setSignInData(initialValue);
     } else {
       alert(error || "Ошибка при входе в приложение");
@@ -73,7 +67,9 @@ function SignInForm({ setUser }) {
             label="Пароль"
           />
         </div>
-        <button className="btn btn--active m20" type="submit">Войти</button>
+        <button className="btn btn--active m20" type="submit">
+          Войти
+        </button>
       </form>
     </>
   );
