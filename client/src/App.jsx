@@ -5,20 +5,20 @@ import UserApi from "./entities/user/UserApi";
 
 // Компонент React - это функция
 function App() {
-  const [user, setUser] = useState('lena');
-  console.log(user);
+  const [user, setUser] = useState(null);
 
-  async function refreshUser() {
-    const { data, statusCode, error } = await UserApi.refresh();
+  useEffect(() => {
+    async function refreshUser() {
+      const { data, statusCode, error } = await UserApi.refresh();
 
-    if (statusCode === 200) {
-      setUser(data.user);
+      if (statusCode === 200) {
+        setUser(data.user);
+      } else {
+        console.error(error);
+      }
     }
-  }
-
-  // useEffect(() => {
-  //   refreshUser();
-  // }, []);
+    refreshUser();
+  }, []);
 
   return <AppRouter setUser={setUser} user={user} />;
 }

@@ -1,21 +1,22 @@
 require("dotenv").config();
 const express = require("express");
-const cors = require("cors");
 const booksRoutes = require("./routes/books.routes");
 const reviewsRoutes = require("./routes/reviews.routes");
 const favoritesRoutes = require("./routes/favorites.routes");
+const authRoutes = require("./routes/auth.routes");
+const serverConfig = require("./config/serverConfig");
+
+const PORT = process.env.PORT || 3000;
 
 const app = express();
+serverConfig(app)
 console.log("APP LOADED");
 
-// (Vite) 
-app.use(cors());
-
 //  JSON (POST/PUT)
-app.use(express.json());
 app.use("/books", booksRoutes);
 app.use("/reviews", reviewsRoutes);
 app.use("/favorites", favoritesRoutes);
+app.use("/auth", authRoutes);
 
 //
 //
@@ -40,5 +41,9 @@ app.get("/", (req, res) => {
     res.status(500).send(`Сори, я содох: ${err}`);
   }
 });
+
+app.listen(PORT, () => {
+  console.log(`Сервер запущен на порту: ${PORT}`);
+})
 
 module.exports = app;

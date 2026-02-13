@@ -82,8 +82,7 @@ export class UserValidator {
     if (
       !password ||
       typeof password !== 'string' ||
-      password.trim().length === 0 ||
-      !this.validatePassword(password)
+      password.trim().length === 0
     ) {
       return {
         isValid: false,

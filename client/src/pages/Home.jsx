@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { axiosInstance } from "../shared/lib/axiosInstance";
 
 export default function Home() {
   const [books, setBooks] = useState([]);
@@ -7,10 +8,7 @@ export default function Home() {
   useEffect(() => {
     async function load() {
       try {
-        const res = await fetch("/books"); // ✅ через vite proxy
-        if (!res.ok) throw new Error("Не удалось загрузить книги");
-
-        const data = await res.json();
+        const data = await axiosInstance.get("/books"); // ✅ через vite proxy
 
         // бек возвращает массив, но оставим поддержку обоих форматов
         const list = Array.isArray(data) ? data : (data?.data ?? []);

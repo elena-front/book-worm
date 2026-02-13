@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const verifyAccessToken = require('../middleware/verifyAccessToken')
 
 // const { getAllBooks } = require("../controllers/books.controller");
 const {
@@ -13,11 +14,11 @@ const {
 
 // GET /books
 router.get("/", getAllBooks);
-router.post("/", createBook);
+router.post("/", verifyAccessToken, createBook);
 router.get("/:id/reviews", getBookReviews);
 router.get("/:id", getBookById);
 router.get("/:id/full", getBookFull);
-router.delete('/:id', deleteBookById);
+router.delete('/:id', verifyAccessToken, deleteBookById);
 
 
 module.exports = router;

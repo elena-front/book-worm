@@ -17,7 +17,9 @@ export default function AppRouter({ user, setUser }) {
         <Route index element={<Home />} />
         <Route
           path={CLIENT_ROUTES.FAVORITES}
-          element={<ProtectedRoute user={user} element={<Favorites />} />}
+          element={
+            <ProtectedRoute user={user} element={<Favorites user={user} />} />
+          }
         />
         <Route
           path={CLIENT_ROUTES.ADD}
