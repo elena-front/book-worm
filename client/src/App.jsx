@@ -9,12 +9,15 @@ function App() {
 
   useEffect(() => {
     async function refreshUser() {
-      const { data, statusCode, error } = await UserApi.refresh();
+      const response = await UserApi.refresh();
+      if (response) {
+        const { data, statusCode, error } = response;
 
-      if (statusCode === 200) {
-        setUser(data.user);
-      } else {
-        console.error(error);
+        if (statusCode === 200) {
+          setUser(data.user);
+        } else {
+          console.error(error);
+        }
       }
     }
     refreshUser();
