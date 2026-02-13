@@ -110,11 +110,9 @@
 import { useEffect, useState } from "react";
 import { axiosInstance } from "../shared/lib/axiosInstance";
 
-export default function Home() {
+export default function Home({ user }) {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  const userId = 1;
 
   useEffect(() => {
     let cancelled = false;
@@ -123,16 +121,10 @@ export default function Home() {
       setLoading(true);
       try {
         // грузим книги и избранное параллельно
-        const [booksRes, favRes] = await Promise.all([
-          fetch("/books"),
-          fetch(`/favorites/${userId}`),
+        const [booksData, favData] = await Promise.all([
+          axiosInstance.get("/books"),
+          user == null ? [] : axiosInstance.get(`/favorites/${user.id}`),
         ]);
-
-        if (!booksRes.ok) throw new Error("Не удалось загрузить книги");
-        if (!favRes.ok) throw new Error("Не удалось загрузить избранное");
-
-        const booksData = await booksRes.json();
-        const favData = await favRes.json();
 
         const allBooks = Array.isArray(booksData)
           ? booksData
@@ -174,19 +166,15 @@ export default function Home() {
 
     try {
       if (!isFav) {
-        const res = await fetch("/favorites", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ user_id: userId, book_id: bookId }),
+        await axiosInstance.post("/favorites", {
+          user_id: user.id,
+          book_id: bookId,
         });
-        if (!res.ok) throw new Error("Ошибка добавления в избранное");
       } else {
-        const res = await fetch("/favorites", {
-          method: "DELETE",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ user_id: userId, book_id: bookId }),
+        await axiosInstance.delete("/favorites", {
+          user_id: user.id,
+          book_id: bookId,
         });
-        if (!res.ok) throw new Error("Ошибка удаления из избранного");
       }
 
       // обновляем UI
@@ -243,17 +231,19 @@ export default function Home() {
             {!loading &&
               books.map((b) => (
                 <article className="card" key={b.id}>
-                  <button
-                    className="fav"
-                    type="button"
-                    aria-label="В избранное"
-                    aria-pressed={b.isFavorite ? "true" : "false"}
-                    onClick={() => toggleFavorite(b.id)}
-                    disabled={b._favLoading}
-                    style={{ opacity: b._favLoading ? 0.6 : 1 }}
-                  >
-                    {b.isFavorite ? "❤️" : "🤍"}
-                  </button>
+                  {user && (
+                    <button
+                      className="fav"
+                      type="button"
+                      aria-label="В избранное"
+                      aria-pressed={b.isFavorite ? "true" : "false"}
+                      onClick={() => toggleFavorite(b.id)}
+                      disabled={b._favLoading}
+                      style={{ opacity: b._favLoading ? 0.6 : 1 }}
+                    >
+                      {b.isFavorite ? "❤️" : "🤍"}
+                    </button>
+                  )}
 
                   <div className="card__media">
                     {b.photo_url ? (

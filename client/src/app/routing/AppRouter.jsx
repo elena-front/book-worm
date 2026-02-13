@@ -14,7 +14,7 @@ export default function AppRouter({ user, setUser }) {
         path={CLIENT_ROUTES.MAIN_PAGE}
         element={<Layout user={user} setUser={setUser} />}
       >
-        <Route index element={<Home />} />
+        <Route index element={<Home user={user} />} />
         <Route
           path={CLIENT_ROUTES.FAVORITES}
           element={
