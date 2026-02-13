@@ -1,8 +1,23 @@
 const { Book, Review } = require("../../db/models");
+const { Op } = require("sequelize");
 
 const getAllBooks = async (req, res) => {
   try {
-    const books = await Book.findAll({ order: [["id", "ASC"]] });
+    const q = (req.query.query || "").trim();
+    const where = q
+      ? {
+        [Op.or]: [
+          { name: { [Op.iLike]: `%${q}%` } },        // поиск по названию
+          { author: { [Op.iLike]: `%${q}%` } },      // поиск по автору
+          { description: { [Op.iLike]: `%${q}%` } }, // (опционально) по описанию
+        ],
+      }
+      : undefined;
+
+    const books = await Book.findAll({
+      where,
+      order: [["id", "ASC"]]
+    });
     res.status(200).json(books);
   } catch (err) {
     console.log(err);

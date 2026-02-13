@@ -113,47 +113,54 @@ import { axiosInstance } from "../shared/lib/axiosInstance";
 export default function Home({ user }) {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     let cancelled = false;
 
-    async function load() {
-      setLoading(true);
-      try {
-        // грузим книги и избранное параллельно
-        const [booksData, favData] = await Promise.all([
-          axiosInstance.get("/books"),
-          user == null ? [] : axiosInstance.get("/favorites"),
-        ]);
+    const timer = setTimeout(() => {
+      async function load() {
+        setLoading(true);
+        try {
+          // грузим книги и избранное параллельно
+          const q = search.trim();
+          const [booksData, favData] = await Promise.all([
+            axiosInstance.get(
+              "/books" + (q ? `?query=${encodeURIComponent(q)}` : ""),
+            ),
+            user == null ? [] : axiosInstance.get("/favorites"),
+          ]);
 
-        const allBooks = Array.isArray(booksData)
-          ? booksData
-          : (booksData?.data ?? []);
-        const favorites = Array.isArray(favData)
-          ? favData
-          : (favData?.data ?? []);
+          const allBooks = Array.isArray(booksData)
+            ? booksData
+            : (booksData?.data ?? []);
+          const favorites = Array.isArray(favData)
+            ? favData
+            : (favData?.data ?? []);
 
-        const favIds = new Set(favorites.map((f) => f.book_id));
+          const favIds = new Set(favorites.map((f) => f.book_id));
 
-        const withFavFlag = allBooks.map((b) => ({
-          ...b,
-          isFavorite: favIds.has(b.id),
-        }));
+          const withFavFlag = allBooks.map((b) => ({
+            ...b,
+            isFavorite: favIds.has(b.id),
+          }));
 
-        if (!cancelled) setBooks(withFavFlag);
-      } catch (e) {
-        console.error(e);
-        if (!cancelled) setBooks([]);
-      } finally {
-        if (!cancelled) setLoading(false);
+          if (!cancelled) setBooks(withFavFlag);
+        } catch (e) {
+          console.error(e);
+          if (!cancelled) setBooks([]);
+        } finally {
+          if (!cancelled) setLoading(false);
+        }
       }
-    }
 
-    load();
+      load();
+    }, 300);
     return () => {
       cancelled = true;
+      clearTimeout(timer);
     };
-  }, []);
+  }, [search]);
 
   async function toggleFavorite(bookId) {
     // делаем простой "lock", чтобы не спамили запросами по 10 раз
@@ -206,6 +213,7 @@ export default function Home({ user }) {
               className="search__input"
               type="search"
               placeholder="Поиск по названию или автору..."
+              onChange={(e) => setSearch(e.target.value)}
             />
           </div>
         </div>
@@ -217,7 +225,9 @@ export default function Home({ user }) {
 
           {!loading && books.length === 0 && (
             <div style={{ padding: 16, color: "#7a6f66" }}>
-              Пока нет книг. Добавьте первую на странице “Добавить книгу”.
+              {search.trim()
+                ? "Ничего не найдено по вашему запросу."
+                : "Пока нет книг. Добавьте первую на странице “Добавить книгу”."}
             </div>
           )}
 
