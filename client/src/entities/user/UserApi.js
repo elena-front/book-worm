@@ -5,7 +5,7 @@ export default class UserApi {
     static async signUp(userData) {
         try {
             const response = await axiosInstance.post('/auth/signup', userData);
-
+            return response.data;
         } catch (error) {
             console.log(error);
         }

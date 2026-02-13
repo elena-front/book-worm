@@ -1,4 +1,5 @@
 import { useMemo, useRef, useState } from "react";
+import { axiosInstance } from "../shared/lib/axiosInstance";
 
 const TARGET_W = 400;
 const TARGET_H = 600;
@@ -110,7 +111,7 @@ export default function AddBook() {
     fd.append("comment", comment.trim());
     if (cover) fd.append("cover", cover); // поле cover должно совпадать с upload.single("cover")
 
-    const res = await fetch("/books", {
+    const res = await axiosInstance.post("/books", {
       method: "POST",
       body: fd,
     });

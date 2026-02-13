@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { axiosInstance } from "../shared/lib/axiosInstance";
 
 export default function Home() {
   const [books, setBooks] = useState([]);
@@ -10,9 +11,7 @@ export default function Home() {
     async function load() {
       setLoading(true);
       try {
-        const res = await fetch("/books");
-        if (!res.ok) throw new Error("Не удалось загрузить книги");
-        const data = await res.json();
+        const data = await axiosInstance.get("/books"); // ✅ через vite proxy
         const list = Array.isArray(data) ? data : (data?.data ?? []);
         if (!cancelled) setBooks(list);
       } catch (e) {
