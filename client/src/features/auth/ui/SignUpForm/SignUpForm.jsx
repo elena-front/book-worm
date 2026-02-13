@@ -22,7 +22,6 @@ function SignUpForm({ setUser }) {
   const signUpHandler = async (event) => {
     event.preventDefault();
 
-    console.log(signUpData);
     const { isValid, error: validationError } =
       UserValidator.validateSignUpData(signUpData);
 
