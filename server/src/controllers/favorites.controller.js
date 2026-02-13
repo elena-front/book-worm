@@ -2,7 +2,8 @@ const { Favorite } = require("../../db/models");
 
 const addToFavorites = async (req, res) => {
   try {
-    const { user_id, book_id } = req.body;
+    const user_id = res.locals?.user?.id;
+    const book_id = req.params.book_id;
 
     if (!user_id || !book_id) {
       return res.status(400).send("user_id и book_id обязательны"); /// чтобы были, чтобы создавлались 
@@ -21,7 +22,7 @@ const addToFavorites = async (req, res) => {
 };
 const getUserFavorites = async (req, res) => {
   try {
-    const userId = req.params.user_id;
+    const userId = res.locals.user.id;
 
     const favorites = await Favorite.findAll({ /// любимые книженции 
       where: { user_id: userId },
@@ -36,7 +37,8 @@ const getUserFavorites = async (req, res) => {
 };
 const removeFromFavorites = async (req, res) => {
   try {
-    const { user_id, book_id } = req.body;
+    const user_id = res.locals.user.id;
+    const book_id = req.params.book_id;
 
     if (!user_id || !book_id) {
       return res.status(400).send("user_id и book_id обязательны");

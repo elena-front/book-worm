@@ -113,7 +113,7 @@ export default function Favorites({ user }) {
   async function loadFavorites() {
     setLoading(true);
     try {
-      const favData = await axiosInstance.get(`/favorites/${user.id}`);
+      const favData = await axiosInstance.get(`/favorites`);
 
       const favorites = Array.isArray(favData)
         ? favData
@@ -150,10 +150,7 @@ export default function Favorites({ user }) {
     );
 
     try {
-      await axiosInstance.delete("/favorites", {
-        user_id: user.id,
-        book_id: bookId,
-      });
+      await axiosInstance.delete(`/favorites/${bookId}`);
       // сразу убираем из списка
       setBooks((prev) => prev.filter((b) => b.id !== bookId));
     } catch (e) {
