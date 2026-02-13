@@ -108,6 +108,7 @@
 // }
 
 import { useEffect, useState } from "react";
+import { axiosInstance } from "../shared/lib/axiosInstance";
 
 export default function Home() {
   const [books, setBooks] = useState([]);

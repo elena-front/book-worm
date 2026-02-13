@@ -17,16 +17,23 @@ export default function AppRouter({ user, setUser }) {
         <Route index element={<Home />} />
         <Route
           path={CLIENT_ROUTES.FAVORITES}
-          element={<ProtectedRoute user={user} element={<Favorites />} />}
+          element={
+            <ProtectedRoute user={user} element={<Favorites user={user} />} />
+          }
         />
         <Route
-          path="add"
+          path={CLIENT_ROUTES.ADD}
           element={<ProtectedRoute user={user} element={<AddBook />} />}
         />
         <Route
-        
           path={CLIENT_ROUTES.AUTH}
-          element={<ProtectedRoute anonymous={true} user={user} element={<AuthPage setUser={setUser} />} />}
+          element={
+            <ProtectedRoute
+              anonymous={true}
+              user={user}
+              element={<AuthPage setUser={setUser} />}
+            />
+          }
         ></Route>
       </Route>
     </Routes>

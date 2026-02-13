@@ -12,6 +12,12 @@
   align-items: center;
 }
 
+.modeWrapper button:hover{
+  background: rgb(223, 167, 16);
+  color: #ffffff;
+  cursor:pointer;
+}
+
 .btn--active {
   background-color: #7a431f;
 }
@@ -31,4 +37,8 @@
   flex-direction: column;
   gap: 8px;
   margin: 0 20px;
+}
+
+button {
+  border: 1px solid  #7a431f;
 }

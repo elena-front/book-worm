@@ -1,13 +1,16 @@
 import { useState } from "react";
-import { useNavigate } from 'react-router';
+import { setAccessToken } from "../../../../shared/lib/axiosInstance";
 import "./SignUpForm.css";
 import { UserValidator } from "../../../../entities/user/model/UserValidator";
 import UserApi from "../../../../entities/user/UserApi";
 
 function SignUpForm({ setUser }) {
-  const [signUpData, setSignUpData] = useState({ имя: "", email: "" });
-  const navigate = useNavigate();
-  console.log(setUser);
+  const initialValue = {
+    username: "",
+    email: "",
+    password: "",
+  };
+  const [signUpData, setSignUpData] = useState(initialValue);
 
   const inputHandler = (event) => {
     setSignUpData((current) => ({
@@ -26,11 +29,11 @@ function SignUpForm({ setUser }) {
       alert(validationError);
       return;
     }
+
     const { statusCode, data, error } = await UserApi.signUp(signUpData);
-    if (statusCode === 200) {
+    if (statusCode === 201) {
       setAccessToken(data.accessToken);
       setUser(data.user);
-      navigate("/tasks");
       setSignUpData(initialValue);
     } else {
       alert(error || "Ошибка при входе в приложение");
@@ -48,15 +51,15 @@ function SignUpForm({ setUser }) {
 
       <form className="form" onSubmit={signUpHandler}>
         <div className="inputGroup">
-          <label htmlFor="name">Имя</label>
+          <label htmlFor="username">Имя</label>
           <input
-            id="name"
+            id="username"
             placeholder="ваше имя"
-            name="name"
+            name="username"
             type="text"
             required
             onChange={inputHandler}
-            value={signUpData.name}
+            value={signUpData.username}
             label="Email"
           />
         </div>
@@ -88,7 +91,9 @@ function SignUpForm({ setUser }) {
           />
         </div>
 
-        <button className="btn btn--active m20" type="submit">Зарегистрироваться</button>
+        <button className="btn btn--active m20" type="submit">
+          Зарегистрироваться
+        </button>
       </form>
     </>
   );

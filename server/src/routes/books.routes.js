@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const verifyAccessToken = require('../middleware/verifyAccessToken')
 const path = require("path");
 const multer = require("multer");
 
@@ -33,13 +34,14 @@ const upload = multer({
 
 // GET /books
 router.get("/", getAllBooks);
+router.post("/", verifyAccessToken, createBook);
 
 // ✅ ВАЖНО: подключаем multer для поля cover
 router.post("/", upload.single("cover"), createBook);
 
 router.get("/:id/reviews", getBookReviews);
 router.get("/:id/full", getBookFull);
+router.delete('/:id', verifyAccessToken, deleteBookById);
 router.get("/:id", getBookById);
-router.delete("/:id", deleteBookById);
 
 module.exports = router;

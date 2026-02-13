@@ -5,7 +5,7 @@ import UserApi from "../../../entities/user/UserApi";
 
 export default function Layout({ user, setUser }) {
   const handleSignOut = async () => {
-   // await UserApi.signOut();
+    await UserApi.signOut();
     setUser(null);
   };
 
@@ -57,7 +57,7 @@ export default function Layout({ user, setUser }) {
 
             {user && (
               <div className="authArea">
-                Привет, {user}
+                Привет, {user.username}
                 <button onClick={handleSignOut} className="btn btn--ghost">
                   Выйти
                 </button>

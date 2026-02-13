@@ -104,8 +104,9 @@
 // }
 
 import { useEffect, useState } from "react";
+import { axiosInstance } from "../shared/lib/axiosInstance";
 
-export default function Favorites() {
+export default function Favorites({ user }) {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -114,17 +115,16 @@ export default function Favorites() {
   async function loadFavorites() {
     setLoading(true);
     try {
-      const favRes = await fetch(`/favorites/${userId}`);
-      if (!favRes.ok) throw new Error("Ошибка загрузки избранного");
-      const favData = await favRes.json();
+      const favData = await axiosInstance.get(`/favorites/${user.id}`);
+
       const favorites = Array.isArray(favData)
         ? favData
         : (favData?.data ?? []);
       const favBookIds = new Set(favorites.map((f) => f.book_id));
 
-      const booksRes = await fetch("/books");
-      if (!booksRes.ok) throw new Error("Ошибка загрузки книг");
-      const booksData = await booksRes.json();
+      const booksData = await axiosInstance.get("/books");
+
+
       const allBooks = Array.isArray(booksData)
         ? booksData
         : (booksData?.data ?? []);

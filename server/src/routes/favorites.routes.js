@@ -6,13 +6,14 @@ const {
   getUserFavorites,
   removeFromFavorites,
 } = require("../controllers/favorites.controller");
+const verifyAccessToken = require("../middleware/verifyAccessToken");
 ///
 ///
 ///
 /// сладкая любовь
 // POST /favorites
-router.post("/", addToFavorites);
-router.get("/:user_id", getUserFavorites);
-router.delete("/", removeFromFavorites);
+router.post("/", verifyAccessToken, addToFavorites);
+router.get("/:user_id", verifyAccessToken, getUserFavorites);
+router.delete("/", verifyAccessToken, removeFromFavorites);
 
 module.exports = router;
