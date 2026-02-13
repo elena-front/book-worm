@@ -110,8 +110,6 @@ export default function Favorites({ user }) {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const userId = 1;
-
   async function loadFavorites() {
     setLoading(true);
     try {
@@ -123,7 +121,6 @@ export default function Favorites({ user }) {
       const favBookIds = new Set(favorites.map((f) => f.book_id));
 
       const booksData = await axiosInstance.get("/books");
-
 
       const allBooks = Array.isArray(booksData)
         ? booksData
@@ -153,13 +150,7 @@ export default function Favorites({ user }) {
     );
 
     try {
-      const res = await fetch("/favorites", {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ user_id: userId, book_id: bookId }),
-      });
-      if (!res.ok) throw new Error("Ошибка удаления из избранного");
-
+      await axiosInstance("/favorites", { user_id: user.id, book_id: bookId });
       // сразу убираем из списка
       setBooks((prev) => prev.filter((b) => b.id !== bookId));
     } catch (e) {
