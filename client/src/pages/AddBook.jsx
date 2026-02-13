@@ -103,12 +103,11 @@ export default function AddBook() {
     e.preventDefault();
     if (!canSubmit) return;
 
-    // ✅ multipart/form-data (для multer)
     const fd = new FormData();
     fd.append("title", title.trim());
     fd.append("author", author.trim());
     fd.append("comment", comment.trim());
-    if (cover) fd.append("cover", cover); // поле cover должно совпадать с upload.single("cover")
+    if (cover) fd.append("cover", cover);
 
     const res = await fetch("/books", {
       method: "POST",

@@ -3,31 +3,40 @@ import { useEffect, useState } from "react";
 export default function Home() {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     let cancelled = false;
 
-    async function load() {
-      setLoading(true);
-      try {
-        const res = await fetch("/books");
-        if (!res.ok) throw new Error("Не удалось загрузить книги");
-        const data = await res.json();
-        const list = Array.isArray(data) ? data : (data?.data ?? []);
-        if (!cancelled) setBooks(list);
-      } catch (e) {
-        console.error(e);
-        if (!cancelled) setBooks([]);
-      } finally {
-        if (!cancelled) setLoading(false);
-      }
-    }
+    const timer = setTimeout(() => {
+      async function load() {
+        setLoading(true);
+        try {
+          const q = search.trim();
+          const url = q ? `/books?query=${encodeURIComponent(q)}` : `/books`;
 
-    load();
+          const res = await fetch(url);
+          if (!res.ok) throw new Error("Не удалось загрузить книги");
+          const data = await res.json();
+          const list = Array.isArray(data) ? data : (data?.data ?? []);
+
+          if (!cancelled) setBooks(list);
+        } catch (e) {
+          console.error(e);
+          if (!cancelled) setBooks([]);
+        } finally {
+          if (!cancelled) setLoading(false);
+        }
+      }
+
+      load();
+    }, 300);
+
     return () => {
       cancelled = true;
+      clearTimeout(timer);
     };
-  }, []);
+  }, [search]);
 
   return (
     <>
@@ -43,10 +52,12 @@ export default function Home() {
             <div className="search__icon" aria-hidden="true">
               🔎
             </div>
+
             <input
               className="search__input"
               type="search"
               placeholder="Поиск по названию или автору..."
+              onChange={(e) => setSearch(e.target.value)}
             />
           </div>
         </div>
@@ -58,7 +69,9 @@ export default function Home() {
 
           {!loading && books.length === 0 && (
             <div style={{ padding: 16, color: "#7a6f66" }}>
-              Пока нет книг. Добавьте первую на странице “Добавить книгу”.
+              {search.trim()
+                ? "Ничего не найдено по вашему запросу."
+                : "Пока нет книг. Добавьте первую на странице “Добавить книгу”."}
             </div>
           )}
 

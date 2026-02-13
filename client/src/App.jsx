@@ -3,7 +3,6 @@ import "./App.css";
 import AppRouter from "./app/routing/AppRouter";
 import UserApi from "./entities/user/UserApi";
 
-// Компонент React - это функция
 function App() {
   const [user, setUser] = useState('lena');
   console.log(user);

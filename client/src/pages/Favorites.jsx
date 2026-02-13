@@ -9,7 +9,6 @@ export default function Favorites() {
   useEffect(() => {
     async function loadFavorites() {
       try {
-        // 1) получаем избранное пользователя (это пары user_id + book_id)
         const favRes = await fetch(`/favorites/${userId}`);
         if (!favRes.ok) throw new Error("Ошибка загрузки избранного");
         const favData = await favRes.json();
@@ -18,7 +17,6 @@ export default function Favorites() {
           : (favData?.data ?? []);
         const favBookIds = new Set(favorites.map((f) => f.book_id));
 
-        // 2) получаем все книги
         const booksRes = await fetch("/books");
         if (!booksRes.ok) throw new Error("Ошибка загрузки книг");
         const booksData = await booksRes.json();
@@ -26,7 +24,6 @@ export default function Favorites() {
           ? booksData
           : (booksData?.data ?? []);
 
-        // 3) оставляем только те, что в избранном
         const onlyFavBooks = allBooks.filter((b) => favBookIds.has(b.id));
         setBooks(onlyFavBooks);
       } catch (e) {
