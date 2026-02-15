@@ -111,20 +111,35 @@ export default function AddBook() {
     fd.append("comment", comment.trim());
     if (cover) fd.append("cover", cover); // поле cover должно совпадать с upload.single("cover")
 
-    const res = await axiosInstance.post("/books", {
-      method: "POST",
-      body: fd,
+    // const res = await axiosInstance.post("/books", {
+    //   method: "POST",
+    //   body: fd,
+    // });
+
+
+    //новый  код
+      try {
+    const res = await axiosInstance.post("/books", fd, {
+      headers: { "Content-Type": "multipart/form-data" },
     });
-
-    if (!res.ok) {
-      const txt = await res.text().catch(() => "");
-      console.error("CREATE BOOK ERROR:", txt);
-      alert("Не удалось добавить книгу");
-      return;
-    }
-
     alert("Книга добавлена!");
     window.location.href = "/";
+  } catch (err) {
+    console.error("CREATE BOOK ERROR:", err?.response?.data || err);
+    alert("Не удалось добавить книгу");
+  }
+
+
+
+    // if (!res.ok) {
+    //   const txt = await res.text().catch(() => "");
+    //   console.error("CREATE BOOK ERROR:", txt);
+    //   alert("Не удалось добавить книгу");
+    //   return;
+    // }
+
+    // alert("Книга добавлена!");
+    // window.location.href = "/";
   }
 
   return (

@@ -34,10 +34,14 @@ const upload = multer({
 
 // GET /books
 router.get("/", getAllBooks);
-router.post("/", verifyAccessToken, createBook);
+//router.post("/", verifyAccessToken, createBook);
+
+router.post("/", verifyAccessToken, upload.single("cover"),
+  createBook
+);
 
 // ✅ ВАЖНО: подключаем multer для поля cover
-router.post("/", upload.single("cover"), createBook);
+//router.post("/", upload.single("cover"), createBook);
 
 router.get("/:id/reviews", getBookReviews);
 router.get("/:id/full", getBookFull);
