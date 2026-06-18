@@ -1,3 +1,4 @@
+require('dotenv').config();
 const morgan = require('morgan');
 const express = require('express');
 const path = require('path');
@@ -5,7 +6,7 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const removeXPoweredByHeader = require('../middleware/removeHeader');
 
-const corsOptions = { origin: ['http://localhost:5173'], credentials: true };
+const corsOptions = { origin: [process.env.CLIENT_URL], credentials: true };
 
 // Функция принимает серверное приложение и подключает миддлвары
 const serverConfig = (app) => {
