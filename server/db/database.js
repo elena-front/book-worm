@@ -10,19 +10,27 @@ module.exports = {
     logging: false,
     seederStorage: "sequelize",
     seederStorageTableName: "SequelizeData",
-  },
-  test: {
-    username: "root",
-    password: 123,
-    database: "database_test",
-    host: "127.0.0.1",
-    dialect: "mysql",
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false
+      }
+    }
   },
   production: {
-    username: "root",
-    password: null,
-    database: "database_production",
-    host: "127.0.0.1",
-    dialect: "mysql",
+    username: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: process.env.DB_NAME,
+    host: process.env.DB_HOST,
+    dialect: "postgres",
+    logging: false,
+    seederStorage: "sequelize",
+    seederStorageTableName: "SequelizeData",
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false
+      }
+    }
   },
 };
