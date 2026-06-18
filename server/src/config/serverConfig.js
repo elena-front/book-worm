@@ -6,6 +6,8 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const removeXPoweredByHeader = require('../middleware/removeHeader');
 
+console.log("CLIENT_URL=", process.env.CLIENT_URL)
+
 const corsOptions = { origin: [process.env.CLIENT_URL], credentials: true };
 
 // Функция принимает серверное приложение и подключает миддлвары
